@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using NUnit.Framework;
+using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,10 +12,18 @@ namespace TurnUp_Portal.Pages
     internal class TMPage
     {
         public void CreateTimeRecord(IWebDriver driver)
+
         {
-            //Click on Create New
-             IWebElement createNewButton = driver.FindElement(By.XPath("//*[@id=\"container\"]/p/a\r\n"));
-            createNewButton.Click();
+            try
+            {
+                //Click on Create New
+                IWebElement createNewButton = driver.FindElement(By.XPath("//*[@id=\"container\"]/p/a\r\n"));
+                createNewButton.Click();
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail("Create New Button hasn't been found");
+            }
 
             //Select Time from dropdown
             IWebElement timeAndMaterialDropdown = driver.FindElement(By.XPath("//*[@id=\"TimeMaterialEditForm\"]/div/div[1]/div/span[1]/span/span[2]/span"));
@@ -53,14 +62,17 @@ namespace TurnUp_Portal.Pages
 
             IWebElement newCode = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[1]"));
 
-            if (newCode.Text == "hashbah")
-            {
-                Console.WriteLine("Time Record created successfully!");
-            }
-            else
-            {
-                Console.WriteLine("New Time Record not created");
-            }
+            Assert.That(newCode.Text == "hashbah", "New Time Record not created");
+
+
+           // if (newCode.Text == "hashbah")
+           // {
+           // Assert.Pass ("Time Record created successfully!");
+           // }
+           // else
+           // {
+           // Assert.Fail("New Time Record not created");
+           // }
             Thread.Sleep(5000);
         }
         public void EditTimeRecord(IWebDriver driver)
@@ -123,14 +135,20 @@ namespace TurnUp_Portal.Pages
             IWebElement deletedCode = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[1]"));
             Thread.Sleep(2000);
 
-            if (deletedCode.Text != "Zain")
-            {
-                Console.WriteLine("The record is deleted successfully!");
-            }
-            else
-            {
-                Console.WriteLine("The record has not been deleted");
-            }
+
+
+
+            Assert.That(deletedCode.Text != "Zain", "The record has not been deleted.Test Failed.");
+            Thread.Sleep(1000);
+
+            //if (deletedCode.Text != "Zain")
+            //{
+            //    Console.WriteLine("The record is deleted successfully!");
+           // }
+           // else
+            //{
+            //    Console.WriteLine("The record has not been deleted");
+           // }
 
 
 

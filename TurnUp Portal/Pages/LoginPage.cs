@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using NUnit.Framework;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
 using System;
@@ -22,15 +23,24 @@ namespace TurnUp_Portal.Pages
             //Explicit Wait
             //WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
            // wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.Id("UserName")));
+
+
             //Identify Username TextBox and enter valid username
             IWebElement UsernameTextbox = driver.FindElement(By.Id("UserName"));
             UsernameTextbox.SendKeys("hari");
 
             Utilities.Wait.WaitToBeViSible(driver, "Id", "Password", 4);
 
-            //Identify password Textbox and enter valid password
-            IWebElement PasswordTextbox = driver.FindElement(By.Id("Password",7));
-            PasswordTextbox.SendKeys("123123");
+            try
+            {
+                //Identify password Textbox and enter valid password
+                IWebElement PasswordTextbox = driver.FindElement(By.Id("Password"));
+                PasswordTextbox.SendKeys("123123");
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail("Username Textbox not located");
+            }
 
             //Identify Loginbutton and click on it
             IWebElement LoginButton = driver.FindElement(By.XPath("//*[@id=\"loginForm\"]/form/div[3]/input[1]"));
